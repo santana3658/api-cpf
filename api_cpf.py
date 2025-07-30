@@ -1,10 +1,10 @@
+import os
 from flask import Flask, jsonify
 import sqlite3
 
 app = Flask(__name__)
 
-# Caminho do banco SQLite (confirme o caminho correto no seu projeto)
-CAMINHO_DB = r"C:\Users\pc\Downloads\dump\db\database.db"
+CAMINHO_DB = r"C:\Users\pc\Downloads\dump\db\database.db"  # Ou um caminho relativo no servidor Render
 NOME_TABELA = "registros"
 
 @app.route("/cpf/<cpf>", methods=["GET"])
@@ -12,8 +12,6 @@ def consulta_cpf(cpf):
     try:
         conn = sqlite3.connect(CAMINHO_DB)
         cursor = conn.cursor()
-
-        # Consulta parametrizada para evitar SQL Injection
         query = f"SELECT cpf, nome, sexo, nascimento FROM {NOME_TABELA} WHERE cpf = ?"
         cursor.execute(query, (cpf,))
         resultado = cursor.fetchone()
@@ -28,15 +26,9 @@ def consulta_cpf(cpf):
             })
         else:
             return jsonify({"erro": "CPF não encontrado"}), 404
-
     except Exception as e:
         return jsonify({"erro": f"Erro no banco: {str(e)}"}), 500
 
-import os
-
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))  # pega a porta do ambiente ou usa 5000
-    print(f"🚀 API rodando em http://0.0.0.0:{port}")
+    port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=True)
-
-
