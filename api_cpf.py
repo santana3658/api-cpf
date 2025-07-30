@@ -4,7 +4,7 @@ import sqlite3
 
 app = Flask(__name__)
 
-CAMINHO_DB = r"C:\Users\pc\Downloads\dump\db\database.db"  # Ou um caminho relativo no servidor Render
+CAMINHO_DB = r"\Users\pc\Desktop\projeto correio\api-cpf\database.db"  # Ou um caminho relativo no servidor Render
 NOME_TABELA = "registros"
 
 @app.route("/cpf/<cpf>", methods=["GET"])
